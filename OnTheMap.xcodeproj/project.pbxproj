@@ -74,8 +74,7 @@
 				F7BB223D20B085CF00AB7308 /* UdacityUsersModel.swift */,
 				F7BB224120B08BE600AB7308 /* UdacityConstants.swift */,
 			);
-			name = Model;
-			path = "New Group";
+			path = Model;
 			sourceTree = "<group>";
 		};
 		F7BB223A20B0854000AB7308 /* Networking */ = {
@@ -84,8 +83,7 @@
 				F7BB223F20B08B0600AB7308 /* UdacityClientManager.swift */,
 				F7BB224320B0AF0000AB7308 /* UdacityClientManagerConvenience.swift */,
 			);
-			name = Networking;
-			path = "New Group1";
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		F7E03CD520AEAA7A00208FA2 /* Controller */ = {
