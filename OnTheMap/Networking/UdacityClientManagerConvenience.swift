@@ -86,7 +86,9 @@ extension UdacityClientManager {
     
     func getStudentsInformationFromParse(completionHandlerForGetStudentDataFromParse: @escaping (_ usersInfoArray: [[String:AnyObject]]?, _ error: NSError?) -> Void) -> Void
     {
-        let parameters = [ ParseParameterKeys.SortOrder : ParseParameterValues.SortDescending]
+        let parameters = [ ParseParameterKeys.SortOrder : ParseParameterValues.SortDescending, ParseParameterKeys.Limit : ParseParameterValues.Limit]
+        
+//        let parameters = [ ParseParameterKeys.SortOrder : ParseParameterValues.SortDescending]
         
         taskForGETMethod(ParseMethods.StudentLocation, parameters: parameters as [String : AnyObject], apiType: .parse ,completionHandlerForGET: { (results, error) in
             

@@ -80,6 +80,7 @@ extension UdacityClientManager
     {
         static let SortAscending = "updatedAt"
         static let SortDescending = "-updatedAt"
+        static let Limit = "100"
     }
     
     struct ParseResults

@@ -43,7 +43,22 @@ class UserMapBaseViewController : UITabBarController {
     
     @IBAction func logout(_ sender: Any) {
         
-        self.dismiss(animated: true, completion: nil)
+        if UdacityClientManager.sharedInstance.isLoggedIn() {
+            UdacityClientManager.sharedInstance.logoutFromUdacity { (success, error) in
+                guard(error == nil) else {
+                    print(error!)
+                    return;
+                }
+                print("Logged out successfully");
+            }
+            
+            showInfo(withTitle: "Log Out", withMessage: "Logged out successfully!", action: {
+                self.dismiss(animated: true, completion: nil)
+            })
+            
+            
+        }
+       
     }
 
     

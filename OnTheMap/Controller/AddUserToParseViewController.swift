@@ -8,10 +8,10 @@
 
 import UIKit
 import CoreLocation
-//import MapKit
 
 
-class AddUserToParseViewController: UIViewController {
+
+class AddUserToParseViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBOutlet weak var textFieldLocation: UITextField!
@@ -19,10 +19,27 @@ class AddUserToParseViewController: UIViewController {
     
     @IBOutlet weak var textFieldLink: UITextField!
     
+    
+    @IBOutlet weak var textFieldFirstName: UITextField!
+    
+    
+    @IBOutlet weak var textFieldLastName: UITextField!
+    
+    
+    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     
     @IBOutlet weak var buttonFindLocation: UIButton!
+    
+    
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    
+    
+    
+    
     
     var isNewUser: Bool? = false
     var udacityUser: UdacityUser?
@@ -60,21 +77,57 @@ class AddUserToParseViewController: UIViewController {
             self.hideActivityIndicator(self.activityIndicator)
         }
         
+        textFieldLocation.delegate = self
+        textFieldLink.delegate = self
+        textFieldFirstName.delegate = self
+        textFieldLastName.delegate = self
         
         
     }
     
     private func loadStudentInfo()
     {
-//        firstNameTextField.text = udacityUser!.firstName
-//        lastNameTextField.text = udacityUser!.lastName
+        textFieldFirstName.text = udacityUser!.firstName
+        textFieldLastName.text = udacityUser!.lastName
+        
         textFieldLink.text = udacityUser!.mediaURL
         textFieldLocation.text = udacityUser!.mapString
         currentLocation = CLLocation(latitude: udacityUser!.latitude!, longitude: udacityUser!.longitude!)
-        //setAnnotationOnMap(udacityUser!.latitude, longitude: udacityUser!.longitude);
         
     }
     
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+         scrollView.setContentOffset(textField.frame.origin, animated: true)
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        textFieldLocation.resignFirstResponder()
+        textFieldLink.resignFirstResponder()
+        textFieldFirstName.resignFirstResponder()
+        textFieldLastName.resignFirstResponder()
+        
+        
+        if (textField == textFieldLocation) {
+            textFieldLink.becomeFirstResponder()
+        }
+        else if (textField == textFieldLink) {
+            textFieldFirstName.becomeFirstResponder()
+           }
+        else if (textField == textFieldFirstName) {
+            textFieldLastName.becomeFirstResponder()
+        }
+        else if (textField == textFieldLastName) {
+            buttonFindLocation.sendActions(for: UIControlEvents.touchUpInside)
+            scrollView.setContentOffset(buttonFindLocation.frame.origin, animated: true)
+        }
+
+       
+        
+        return true
+    }
     
     
     
@@ -87,7 +140,7 @@ class AddUserToParseViewController: UIViewController {
     }
     
     private func enableControllers(_ enable: Bool) {
-        self.enableUI(views: textFieldLocation, textFieldLink, buttonFindLocation, enable: enable)
+        self.enableUI(views: textFieldLocation, textFieldLink, textFieldFirstName, textFieldLastName ,buttonFindLocation, enable: enable)
     }
     
     
@@ -100,8 +153,10 @@ class AddUserToParseViewController: UIViewController {
         
         let location = textFieldLocation.text!
         let link = textFieldLink.text!
+        let firstName = textFieldFirstName.text!
+        let lastName = textFieldLastName.text!
         
-        if location.isEmpty || link.isEmpty {
+        if location.isEmpty || link.isEmpty || firstName.isEmpty || lastName.isEmpty {
             showInfo(withMessage: "All fields are required.")
             return
         }
@@ -160,8 +215,8 @@ class AddUserToParseViewController: UIViewController {
         
         var studentInfo = [
             ParseUserInfoKeys.UniqueKey : UdacityClientManager.sharedInstance.udacityUserID!,
-            ParseUserInfoKeys.FirstName : "Hiren",
-            ParseUserInfoKeys.LastName : "Samtani",
+            ParseUserInfoKeys.FirstName : textFieldFirstName.text!,
+            ParseUserInfoKeys.LastName : textFieldLastName.text!,
             ParseUserInfoKeys.MapString : textFieldLocation.text!,
             ParseUserInfoKeys.MediaURL : textFieldLink.text!,
             ParseUserInfoKeys.Latitude : coordinate.latitude,
@@ -187,6 +242,20 @@ class AddUserToParseViewController: UIViewController {
                 mapPinLocationController.isNewUser = isNewUser
         }
         }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+//        keyboardMoveListener.subscribe(view: view, elements: [textFieldLastName,textFieldFirstName])
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        super.viewWillDisappear(animated)
+//        keyboardMoveListener.unsubscribe()
         
     }
     

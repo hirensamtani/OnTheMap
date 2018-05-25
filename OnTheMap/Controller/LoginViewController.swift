@@ -19,6 +19,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var activityIndicator: UIActivityIndicatorView? = nil
     
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +28,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         textUserName.delegate = self
         textPassword.delegate = self
         
-//        textUserName.text = "hirensamtani@gmail.com"
-//        textPassword.text = "@harita1"
         
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(loginButton.frame.origin, animated: true)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -81,14 +85,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if username == "" || password == "" {
            
              self.showInfo(withTitle: "Error", withMessage: "Username or Password cannot be blank.")
-            
-            
-            
-            
-//            let alertController = UIAlertController(title: "Error", message: "Username or Password cannot be blank.", preferredStyle: .alert)
-//            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//            self.present(alertController, animated: true, completion: nil)
-            
+
         } else {
             loginButton.setTitle("", for: [])
             sender.isEnabled = false
